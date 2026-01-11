@@ -1,0 +1,139 @@
+STRUCTURE DU PROJET BACKEND - ARCHITECTURE MVC
+
+back-front-energie/
+└── backend/
+    ├── src/
+    │   ├── main/
+    │   │   ├── java/
+    │   │   │   └── com/energiefacile/
+    │   │   │       ├── controllers/          # REST Controllers
+    │   │   │       │   ├── ConsumptionRecordController.java
+    │   │   │       │   ├── DailyConsumptionController.java
+    │   │   │       │   ├── MonthlyConsumptionController.java
+    │   │   │       │   ├── AlertController.java
+    │   │   │       │   └── DashboardController.java
+    │   │   │       │
+    │   │   │       ├── services/             # Business Logic
+    │   │   │       │   ├── ConsumptionRecordService.java
+    │   │   │       │   ├── DailyConsumptionService.java
+    │   │   │       │   ├── MonthlyConsumptionService.java
+    │   │   │       │   └── AlertService.java
+    │   │   │       │
+    │   │   │       ├── repositories/         # Data Access (JPA)
+    │   │   │       │   ├── ConsumptionRecordRepository.java
+    │   │   │       │   ├── DailyConsumptionRepository.java
+    │   │   │       │   ├── MonthlyConsumptionRepository.java
+    │   │   │       │   └── AlertRepository.java
+    │   │   │       │
+    │   │   │       ├── models/               # JPA Entities
+    │   │   │       │   ├── ConsumptionRecord.java
+    │   │   │       │   ├── EnergyType.java (Enum)
+    │   │   │       │   ├── DailyConsumption.java
+    │   │   │       │   ├── MonthlyConsumption.java
+    │   │   │       │   ├── Alert.java
+    │   │   │       │   └── AlertType.java (Enum)
+    │   │   │       │
+    │   │   │       ├── dto/                  # Data Transfer Objects
+    │   │   │       │   ├── ConsumptionRecordDTO.java
+    │   │   │       │   ├── DailyConsumptionDTO.java
+    │   │   │       │   ├── MonthlyConsumptionDTO.java
+    │   │   │       │   ├── AlertDTO.java
+    │   │   │       │   └── CurrentConsumptionDTO.java
+    │   │   │       │
+    │   │   │       ├── config/               # Configuration
+    │   │   │       │   ├── CorsConfig.java
+    │   │   │       │   └── DataInitializer.java (Seed data)
+    │   │   │       │
+    │   │   │       └── EnergieFacileApplication.java  # Main class
+    │   │   │
+    │   │   └── resources/
+    │   │       └── application.properties    # Application config
+    │   │
+    │   └── test/                             # Tests (à compléter)
+    │
+    ├── pom.xml                               # Maven configuration
+    ├── docker-compose.yml                    # MySQL Docker setup
+    ├── README.md                             # Documentation
+    ├── .gitignore                            # Git ignore rules
+    ├── run.bat                               # Windows startup script
+    ├── run.sh                                # Unix/Linux startup script
+    └── STRUCTURE.txt                         # This file
+
+ARCHITECTURE MVC EXPLIQUÉE:
+
+1. MODELS (Modèle)
+   - Entités JPA représentant la structure de la base de données
+   - Correspondance directe avec les tables MySQL
+   - Énumérations pour les types de valeurs (EnergyType, AlertType)
+
+2. REPOSITORIES (Accès aux données)
+   - Interfaces JPA héritant de JpaRepository
+   - Méthodes personnalisées pour les requêtes SQL complexes
+   - Gestion complète de la persistence
+
+3. SERVICES (Logique métier)
+   - Traitent la logique applicative
+   - Convertissent les entités en DTOs
+   - Effectuent les calculs et transformations
+   - Gèrent les transactions
+
+4. CONTROLLERS (Contrôleurs)
+   - Points d'accès REST API
+   - Reçoivent les requêtes HTTP
+   - Appellent les services
+   - Retournent les réponses JSON
+
+5. DTOs (Data Transfer Objects)
+   - Objets de transfert pour les requêtes/réponses API
+   - Découpent les données pour l'API
+   - Protègent les entités JPA
+
+6. CONFIG (Configuration)
+   - CORS pour communiquer avec le frontend
+   - DataInitializer pour remplir la BD au démarrage
+
+FLUX DE DONNÉES:
+
+HTTP Request
+     ↓
+Controller (reçoit et valide)
+     ↓
+Service (logique métier)
+     ↓
+Repository (requête BDD)
+     ↓
+Database (données persistes)
+     ↓
+Repository (retourne entité)
+     ↓
+Service (convertit en DTO)
+     ↓
+Controller (retourne DTO)
+     ↓
+HTTP Response (JSON)
+
+TECHNOLOGIES:
+
+- Spring Boot 3.2.1
+- Spring Data JPA (Hibernate)
+- MySQL 8.0
+- Maven 3.6+
+- Java 17+
+- Docker & Docker Compose
+- Lombok (annotation processor)
+
+DÉMARRAGE RAPIDE:
+
+1. Windows:
+   > run.bat
+
+2. Linux/Mac:
+   $ chmod +x run.sh
+   $ ./run.sh
+
+3. Manuel:
+   $ docker-compose up -d
+   $ mvn clean install
+   $ mvn spring-boot:run
+
+L'application sera accessible sur: http://localhost:8080/api
